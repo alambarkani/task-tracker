@@ -1,0 +1,25 @@
+# Compiled Binaries (Executable files)
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+bin/
+out/
+
+# Test Artifacts and Code Coverage
+*.test
+*.out
+*.coverprofile
+profile.cov
+
+# Dependency Directories
+# Note: Keep commented out if you explicitly use Go vendoring
+# vendor/
+
+# Go Workspace files (Local development configurations)
+go.work
+go.work.sum
+
+# Local Environment Secrets
+.env
