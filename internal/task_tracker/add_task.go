@@ -19,7 +19,7 @@ func AddTask(description string) error {
 	}
 
 	newTask.Description = description
-	newTask.Status = "todo"
+	newTask.Status = Todo
 	newTask.CreatedAt = time.Now().String()
 	newTask.UpdatedAt = time.Now().String()
 
