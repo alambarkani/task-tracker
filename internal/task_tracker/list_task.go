@@ -4,12 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-
-	"alambarkani.com/task_tracker/internal/dir_helper"
 )
 
-func TaskList() ([]Task, error) {
-	taskFile, err := os.Open(dir_helper.TaskDir())
+func TaskList(path string) ([]Task, error) {
+	taskFile, err := os.Open(path)
 	if err != nil {
 		return nil, fmt.Errorf("Error opening file: %s", err)
 	}

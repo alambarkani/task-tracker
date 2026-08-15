@@ -5,13 +5,9 @@ import (
 	"fmt"
 	"os"
 	"slices"
-
-	"alambarkani.com/task_tracker/internal/dir_helper"
 )
 
-func DeleteTask(id int) error {
-	path := dir_helper.TaskDir()
-
+func DeleteTask(path string, id int) error {
 	file, err := os.Open(path)
 	if err != nil {
 		return fmt.Errorf("Error opening file: %s", err)
@@ -25,26 +21,33 @@ func DeleteTask(id int) error {
 		return fmt.Errorf("Error decoding file: %s", err)
 	}
 
-	for i, data := range tasks {
+	var found bool
+	for _, data := range tasks {
 		if data.ID == id {
-			tasks = slices.DeleteFunc(tasks, func(t Task) bool {
-				return t.ID == id
-			})
+			found = true
 			break
-		}
-
-		if i >= len(tasks)-1 {
-			return fmt.Errorf("Task doesn't exist")
 		}
 	}
 
+	if !found {
+		return fmt.Errorf("Task doesn't exist")
+	}
+
+	tasks = slices.DeleteFunc(tasks, func(t Task) bool {
+		return t.ID == id
+	})
+
 	newFile, err := os.Create(path)
+	if err != nil {
+		return fmt.Errorf("Error creating file: %s", err)
+	}
+	defer newFile.Close()
+
 	encoder := json.NewEncoder(newFile)
 	err = encoder.Encode(&tasks)
 	if err != nil {
 		return fmt.Errorf("Error encoding file: %s", err)
 	}
-	defer newFile.Close()
 
 	return nil
 }

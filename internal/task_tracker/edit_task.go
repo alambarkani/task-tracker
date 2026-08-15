@@ -4,12 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-
-	"alambarkani.com/task_tracker/internal/dir_helper"
 )
 
-func EditTask(id int, description string) error {
-	path := dir_helper.TaskDir()
+func EditTask(path string, id int, description string) error {
 
 	file, err := os.Open(path)
 	if err != nil {
