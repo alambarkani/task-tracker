@@ -5,13 +5,11 @@ import (
 	"fmt"
 	"os"
 	"time"
-
-	"alambarkani.com/task_tracker/internal/dir_helper"
 )
 
-func AddTask(description string) error {
+func AddTask(path string, description string) error {
 	var newTask Task
-	lastTask, err := TaskList()
+	lastTask, err := TaskList(path)
 	if err != nil {
 		newTask.ID = 1
 	} else {
@@ -24,8 +22,6 @@ func AddTask(description string) error {
 	newTask.UpdatedAt = time.Now().String()
 
 	var tasks []Task
-
-	path := dir_helper.TaskDir()
 
 	fileData, err := os.Open(path)
 	switch {

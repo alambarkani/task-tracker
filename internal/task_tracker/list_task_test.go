@@ -1,9 +1,35 @@
 package task_tracker
 
-import "testing"
+import (
+	"encoding/json"
+	"os"
+	"path"
+	"testing"
+	"time"
+)
 
 func TestTaskList(t *testing.T) {
-	tasks, err := TaskList()
+	dir := t.TempDir()
+	path := path.Join(dir, "tasks.json")
+
+	seed := []Task {
+		{
+			ID: 1,
+			Description: "a",
+			Status: Todo,
+			CreatedAt: time.Now().String(),
+			UpdatedAt: time.Now().String(),
+		},
+	}
+	data, err := json.Marshal(seed)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = os.WriteFile(path, data, 0644); err != nil {
+		t.Fatal(err)
+	}
+	
+	tasks, err := TaskList(path)
 	if err != nil {
 		t.Error(err)
 	}
