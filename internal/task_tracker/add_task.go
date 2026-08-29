@@ -8,19 +8,6 @@ import (
 )
 
 func AddTask(path string, description string) error {
-	var newTask Task
-	lastTask, err := TaskList(path)
-	if err != nil {
-		newTask.ID = 1
-	} else {
-		newTask.ID = lastTask[len(lastTask)-1].ID + 1
-	}
-
-	newTask.Description = description
-	newTask.Status = Todo
-	newTask.CreatedAt = time.Now().String()
-	newTask.UpdatedAt = time.Now().String()
-
 	var tasks []Task
 
 	fileData, err := os.Open(path)
@@ -37,6 +24,18 @@ func AddTask(path string, description string) error {
 			return fmt.Errorf("Error decoding JSON: %s", err)
 		}
 	}
+
+	var newTask Task
+	if len(tasks) == 0 {
+		newTask.ID = 1
+	} else {
+		newTask.ID = tasks[len(tasks)-1].ID + 1
+	}
+
+	newTask.Description = description
+	newTask.Status = Todo
+	newTask.CreatedAt = time.Now().String()
+	newTask.UpdatedAt = time.Now().String()
 
 	tasks = append(tasks, newTask)
 
